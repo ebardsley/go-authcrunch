@@ -82,6 +82,7 @@ func (b *IdentityProvider) fetchUserInfo(tokenData, userData map[string]interfac
 		"User info received",
 		zap.Any("userinfo", userinfo),
 		zap.String("url", b.userInfoURL),
+		zap.String("roles_field_name", b.userInfoRolesFieldName),
 	)
 
 	var roles []string
@@ -96,6 +97,11 @@ func (b *IdentityProvider) fetchUserInfo(tokenData, userData map[string]interfac
 				delete(userinfo, k)
 			}
 		}
+		b.logger.Debug(
+			"Extracting user info fields",
+			zap.Any("userinfo", userinfo),
+			zap.String("roles_field_name", b.userInfoRolesFieldName),
+		)
 		if len(userinfo) > 0 {
 			roles = extractUserInfoRoles(userinfo, b.userInfoRolesFieldName)
 			if len(userinfo) > 0 {

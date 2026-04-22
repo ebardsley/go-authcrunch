@@ -448,6 +448,8 @@ func (b *IdentityProvider) fetchDiscordGuilds(authToken string) (*userData, erro
 		return nil, err
 	}
 
+	b.logger.Debug("Parsed user guild infomation", zap.Any("guilds", guilds), zap.Any("filter", b.userGroupFilters))
+
 	for _, guild := range guilds {
 		guildID := guild["id"].(string)
 		// Exclude org from processing if it does not match org filters.
